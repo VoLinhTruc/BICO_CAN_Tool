@@ -1,0 +1,26 @@
+{
+    "python.autoComplete.extraPaths": [
+        "Common/Template_Material",
+        "QMainWindow_Project_Template/Template_Material",
+        "QMainWindow_Project_Template/Client_Code/Bico_QWindowThread_Sample",
+        "QMainWindow_Project_Template/Client_Code/Bico_QWindowThread_Sample/Data_Object",
+        "QtQuick_Project_Template/Template_Material",
+        "QtQuick_Project_Template/Client_Code/BICO_CAN_Tool",
+        "QtQuick_Project_Template/Client_Code/BICO_CAN_Tool/Data_Object",
+        "QUILoader_Project_Template/Template_Material",
+        "QUILoader_Project_Template/Client_Code/Bico_QUILoaderThread_Sample",
+        "QUILoader_Project_Template/Client_Code/Bico_QUILoaderThread_Sample/Data_Object"
+    ],
+    "python.analysis.extraPaths": [
+        "Common/Template_Material",
+        "QMainWindow_Project_Template/Template_Material",
+        "QMainWindow_Project_Template/Client_Code/Bico_QWindowThread_Sample",
+        "QMainWindow_Project_Template/Client_Code/Bico_QWindowThread_Sample/Data_Object",
+        "QtQuick_Project_Template/Template_Material",
+        "QtQuick_Project_Template/Client_Code/BICO_CAN_Tool",
+        "QtQuick_Project_Template/Client_Code/BICO_CAN_Tool/Data_Object",
+        "QUILoader_Project_Template/Template_Material",
+        "QUILoader_Project_Template/Client_Code/Bico_QUILoaderThread_Sample",
+        "QUILoader_Project_Template/Client_Code/Bico_QUILoaderThread_Sample/Data_Object"
+    ]
+}

@@ -1,0 +1,3 @@
+{
+    "files": ["Client_Code/BICO_CAN_Basic/BICO_CAN_Basic.py","Template_Material/bico_quithread.py","resource.py","Client_Code/BICO_CAN_Basic/Data_Object/Example_Data_Object.py","main.py","Template_Material/bico_qmutexqueue.py","Template_Material/bico_qthread.py","resource.qrc"]
+}

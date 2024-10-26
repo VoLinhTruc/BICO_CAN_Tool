@@ -1,0 +1,11 @@
+<!-- The purpose of the resource file is to intergrate the resource (qml file, image, text, data (csv, excel), ...) into binary format (close source / not open source) -->
+
+<!-- to gegenerate *.py module from resource file -->
+<!-- run "pyside6-rcc resource.rc -o resource.py" -->
+<!-- or run the "generate_python_class_from_resource.bat" -->
+
+<RCC>
+    <qresource prefix="/">
+        <file>Client_Code/BICO_CAN_Basic/BICO_CAN_Basic.qml</file>
+    </qresource>
+</RCC>
