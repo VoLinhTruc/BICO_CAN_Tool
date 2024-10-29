@@ -190,7 +190,7 @@ Window {
         y: 446
         width: 97
         height: 40
-        placeholderText: "18DA10F1"
+        placeholderText: "18DAF110"
         font.pixelSize: 15
         background: Rectangle {
             border.color: "gray"  // Set border color
@@ -218,7 +218,7 @@ Window {
             border.color: "#808080"
             border.width: 1
         }
-        placeholderText: "18DAF110"
+        placeholderText: "18DA10F1"
     }
 
 
@@ -267,7 +267,7 @@ Window {
         y: 501
         width: 631
         height: 40
-        placeholderText: "02 10 01"
+        placeholderText: "10 01"
         font.pixelSize: 15
         background: Rectangle {
             border.color: "gray"  // Set border color
@@ -405,7 +405,7 @@ Window {
         width: 631
         height: 40
         font.pixelSize: 15
-        placeholderText: "02 10 01"
+        placeholderText: "10 01"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
@@ -454,7 +454,7 @@ Window {
         width: 631
         height: 40
         font.pixelSize: 15
-        placeholderText: "02 10 01"
+        placeholderText: "10 01"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
@@ -504,7 +504,7 @@ Window {
         width: 631
         height: 40
         font.pixelSize: 15
-        placeholderText: "02 10 01"
+        placeholderText: "10 01"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
@@ -554,7 +554,7 @@ Window {
         width: 631
         height: 40
         font.pixelSize: 15
-        placeholderText: "02 10 01"
+        placeholderText: "10 01"
         background: Rectangle {
             radius: 5
             border.color: "#808080"

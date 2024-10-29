@@ -83,29 +83,39 @@ class BICO_CAN_TP(Bico_QUIThread):
     #     return isotp.CanMessage(arbitration_id=msg.arbitration_id, data=msg.data, dlc=msg.dlc, extended_id=msg.is_extended_id)
     
     def my_rxfn(self, timeout:float) -> Optional[isotp.CanMessage]:
-        # All my_hardware_something and get_something() function are fictive of course.
-        msg = self.bus.recv(0.01) # Blocking read are encouraged for better timing.
-        if msg is None:
-            return None # Return None if no message available
-        if msg.arbitration_id <= 0x7FF:
-            msg.arbitration_id &= 0x7FF
-            msg.is_extended_id = False
-        else:
-            msg.is_extended_id = True
-        print(f'{msg}')
-        return isotp.CanMessage(arbitration_id=msg.arbitration_id, data=msg.data, dlc=msg.dlc, extended_id=msg.is_extended_id)
+        ret = isotp.CanMessage()
+        try:
+            # All my_hardware_something and get_something() function are fictive of course.
+            msg = self.bus.recv(0.01) # Blocking read are encouraged for better timing.
+            if msg is not None:
+                if msg.arbitration_id <= 0x7FF:
+                    msg.arbitration_id &= 0x7FF
+                    msg.is_extended_id = False
+                else:
+                    msg.is_extended_id = True
+                print(f'{msg}')
+                ret = isotp.CanMessage(arbitration_id=msg.arbitration_id, data=msg.data, dlc=msg.dlc, extended_id=msg.is_extended_id)
+        except:
+            print("Error, but I don't know what it is >_<")
+        finally:
+            return ret
 
 
     def my_txfn(self, isotp_msg:isotp.CanMessage):
-        # all set_something functions and my_hardware_something are fictive.
-        msg = can.Message()
-        msg.arbitration_id = isotp_msg.arbitration_id
-        msg.data = (isotp_msg.data)
-        msg.dlc = (isotp_msg.dlc)
-        msg.is_rx = False
-        msg.is_extended_id = (isotp_msg.is_extended_id)
-        self.bus.send(msg)
-        print(f'{msg}')
+        try:
+            # all set_something functions and my_hardware_something are fictive.
+            msg = can.Message()
+            msg.arbitration_id = isotp_msg.arbitration_id
+            msg.data = (isotp_msg.data)
+            msg.dlc = (isotp_msg.dlc)
+            msg.is_rx = False
+            msg.is_extended_id = (isotp_msg.is_extended_id)
+            self.bus.send(msg)
+            print(f'{msg}')
+        except:
+            print("Error, but I don't know what it is >_<")
+        finally:
+            pass
     
     
     
@@ -152,12 +162,19 @@ class BICO_CAN_TP(Bico_QUIThread):
                         rxid = int(json_data["rxid"], 16)
                         txid = int(json_data["txid"], 16)
                         address_mode = None
+                        filters = []
                         if (rxid <= 0x7FF) and (txid <= 0x7FF):
                             address_mode = isotp.AddressingMode.Normal_11bits
+                            filters = [
+                                {"can_id": rxid, "can_mask": 0x7FF, "extended": False},
+                            ]
                         if (rxid > 0x7FF) and (txid > 0x7FF):
                             address_mode = isotp.AddressingMode.Normal_29bits
+                            filters = [
+                                {"can_id": rxid, "can_mask": 0x1FFFFFFF, "extended": True},
+                            ]
                         if (address_mode != None):
-                            self.bus = can.Bus(interface="serial", channel=json_data["serial_port"])
+                            self.bus = can.Bus(interface="serial", channel=json_data["serial_port"], can_filters=filters)
                             self.addr = isotp.Address(address_mode, rxid=rxid, txid=txid)
                             # self.tp_layer = isotp.TransportLayer(address=addr, params=params, error_handler=my_error_handler, rxfn=my_rxfn, txfn=my_txfn)
                             self.tp_layer = isotp.TransportLayer(address=self.addr, params=self.params, error_handler=self.my_error_handler, rxfn=self.my_rxfn, txfn=self.my_txfn)
@@ -258,7 +275,7 @@ class BICO_CAN_TP(Bico_QUIThread):
         # print("Hello from " + self.objectName())
         # print("Num of running thread: " + str(len(Bico_QUIThread.getThreadHash())))
                     
-        # self.msleep(500)
+        self.msleep(100)
     
         return continue_to_run
 
