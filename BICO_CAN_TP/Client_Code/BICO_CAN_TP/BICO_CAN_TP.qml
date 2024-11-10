@@ -188,9 +188,9 @@ Window {
         id: rxID
         x: 15
         y: 446
-        width: 97
+        width: 137
         height: 40
-        placeholderText: "18DAF110"
+        placeholderText: "18DAF110x"
         font.pixelSize: 15
         background: Rectangle {
             border.color: "gray"  // Set border color
@@ -200,7 +200,7 @@ Window {
     }
 
     Text {
-        x: 125
+        x: 158
         y: 424
         text: "Target ID"
         font.pixelSize: 15
@@ -208,9 +208,9 @@ Window {
 
     TextField {
         id: txID
-        x: 125
+        x: 158
         y: 446
-        width: 97
+        width: 137
         height: 40
         font.pixelSize: 15
         background: Rectangle {
@@ -218,7 +218,7 @@ Window {
             border.color: "#808080"
             border.width: 1
         }
-        placeholderText: "18DA10F1"
+        placeholderText: "18DA10F1x"
     }
 
 

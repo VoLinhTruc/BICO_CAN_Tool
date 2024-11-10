@@ -27,6 +27,8 @@ class BICO_CAN_Basic(Bico_QUIThread):
     init_done = False
     current_ports = None
     
+    serial_connected = False
+    
     def getComPorts(self):
         return [port.device for port in serial.tools.list_ports.comports()]
     
@@ -36,9 +38,13 @@ class BICO_CAN_Basic(Bico_QUIThread):
             self.current_ports = new_ports
             self.toUI.emit("com_port_list", self.current_ports)
             
-    def generateCanLog(self, can_msg):
+    def generateCanLog(self, can_msg:can.Message):
         hex_string = '   '.join(f'{byte:02X}' for byte in can_msg.data)
-        can_log = f'{datetime.now()}\t{hex(can_msg.arbitration_id).ljust(10, " ").upper()[2:]}    {can_msg.dlc}\t{hex_string.upper()}'
+        can_id_as_hex_str = hex(can_msg.arbitration_id)[2:].upper()
+        if (can_msg.is_extended_id):
+            can_id_as_hex_str = can_id_as_hex_str + "x"
+        # can_log = f'{datetime.now()}\t{hex(can_msg.arbitration_id).ljust(10, " ").upper()[2:]}    {can_msg.dlc}\t{hex_string.upper()}'
+        can_log = f'{datetime.now()}\t{can_id_as_hex_str.ljust(9, " ")}    {can_msg.dlc}\t{hex_string.upper()}'
         return can_log
     
     
@@ -65,7 +71,8 @@ class BICO_CAN_Basic(Bico_QUIThread):
                     # print(data)
                     print(f'serial_port: {json_data["serial_port"]}')
                     print(f'can_baudrate: {json_data["can_baudrate"]}')
-                    self.bus = can.Bus(interface="serial", channel=json_data["serial_port"])
+                    self.bus = can.Bus(interface="serial", channel=json_data["serial_port"], baudrate=921600)
+                    self.serial_connected = True
                 except:
                     print("Error, but I don't know what it is >_<")
                 finally:
@@ -82,6 +89,7 @@ class BICO_CAN_Basic(Bico_QUIThread):
                         self.bus.shutdown()
                         print(f'BUS: {self.bus}')
                         self.bus = None
+                    self.serial_connected = False
                 except:
                     print("Error, but I don't know what it is >_<")
                 finally:
@@ -99,12 +107,23 @@ class BICO_CAN_Basic(Bico_QUIThread):
                     for i in range(0, len(hex_string), 2):
                         hex_value = int(hex_string[i:i+2], 16)  # Convert each pair to hex
                         hex_list.append(hex_value)
+                    
+                    is_extended = False
+                    can_id = 0
+                    if (json_data["can_id"][-1] == "x"):
+                        is_extended = True
+                        can_id = int(json_data["can_id"][:-1], 16)
+                    else:
+                        is_extended = False
+                        can_id = int(json_data["can_id"], 16)
+                        
                     tx_msg = can.Message(
-                                arbitration_id=int(json_data["can_id"], 16),
+                                arbitration_id=can_id,
+                                is_extended_id=is_extended,
                                 data=hex_list,
                             )
                     if self.bus != None:
-                        self.bus.send(tx_msg)
+                        self.bus.send(tx_msg, timeout=0.01)
                         can_log = self.generateCanLog(tx_msg)
                         self.toUI.emit("can_log", can_log)
                 except:
@@ -134,7 +153,7 @@ class BICO_CAN_Basic(Bico_QUIThread):
 
         try: 
             if (self.bus != None):
-                rx_msg = self.bus.recv(0.01)
+                rx_msg = self.bus.recv(0.001)
                 if rx_msg is not None:
                     # if (rx_msg.arbitration_id == 0x18DA10F1) or (rx_msg.arbitration_id == 0x18DAF110):
                     if (True):
@@ -144,6 +163,18 @@ class BICO_CAN_Basic(Bico_QUIThread):
             print("Error, but I don't know what it is >_<")
         finally:
             pass
+        
+        # if (self.bus != None):
+        #     tx_msg = can.Message(
+        #                 arbitration_id=int("123", 16),
+        #                 data=[1, 2, 3, 4, 5, 6, 7, 8],
+        #             )
+        #     self.bus.send(tx_msg)
+            
+        # print(f'{self.objectName()} - {datetime.now()}')
+            
+        
+        self.msleep(1)
     
         return continue_to_run
 

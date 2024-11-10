@@ -205,14 +205,17 @@ Window {
         id: canIDField
         x: 15
         y: 446
-        width: 88
+        width: 96
         height: 40
-        placeholderText: "18DA10F1"
+        placeholderText: "18DA10F1x"
         font.pixelSize: 15
         background: Rectangle {
             border.color: "gray"  // Set border color
             border.width: 1       // Set border width
             radius: 5              // Set corner radius (optional)
+        }
+        onTextChanged: {
+            text = text.toUpperCase()
         }
     }
 
@@ -225,9 +228,9 @@ Window {
     }
     TextField {
         id: canDataField
-        x: 109
+        x: 117
         y: 446
-        width: 176
+        width: 168
         height: 40
         placeholderText: "02 10 01"
         font.pixelSize: 15
@@ -391,11 +394,11 @@ Window {
                 var can_data = canDataField1.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField1.placeholderText
                 }
                 if (can_data == "")
                 {
-                    can_data = canDataField.placeholderText
+                    can_data = canDataField1.placeholderText
                 }
                 toThread(text, `{"can_id": "${can_id}", "can_data": "${can_data}"}`)
         }
@@ -405,22 +408,25 @@ Window {
         id: canIDField1
         x: 15
         y: 492
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "18DA10F1x"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField1
-        x: 109
+        x: 117
         y: 492
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -451,11 +457,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField2.text
                 var can_data = canDataField2.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField2.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -469,22 +475,25 @@ Window {
         id: canIDField2
         x: 15
         y: 538
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "18DAF110x"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField2
-        x: 109
+        x: 117
         y: 538
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -515,11 +524,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField3.text
                 var can_data = canDataField3.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField3.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -533,22 +542,25 @@ Window {
         id: canIDField3
         x: 15
         y: 584
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "18DAF110x"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField3
-        x: 109
+        x: 117
         y: 584
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -579,11 +591,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField4.text
                 var can_data = canDataField4.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField4.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -597,10 +609,10 @@ Window {
         id: canIDField4
         x: 15
         y: 630
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "712"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
@@ -610,9 +622,9 @@ Window {
 
     TextField {
         id: canDataField4
-        x: 109
+        x: 117
         y: 630
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -643,11 +655,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField5.text
                 var can_data = canDataField5.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField5.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -661,22 +673,25 @@ Window {
         id: canIDField5
         x: 15
         y: 676
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "712"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField5
-        x: 109
+        x: 117
         y: 676
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -707,11 +722,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField6.text
                 var can_data = canDataField6.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField6.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -725,14 +740,17 @@ Window {
         id: canIDField6
         x: 390
         y: 538
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "123x"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
+        }
+        onTextChanged: {
+            text = text.toUpperCase()
         }
     }
 
@@ -752,9 +770,9 @@ Window {
 
     TextField {
         id: canDataField6
-        x: 484
+        x: 492
         y: 538
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -785,11 +803,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField7.text
                 var can_data = canDataField7.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField7.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -803,22 +821,25 @@ Window {
         id: canIDField7
         x: 390
         y: 584
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "321x"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField7
-        x: 484
+        x: 492
         y: 584
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -849,11 +870,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField8.text
                 var can_data = canDataField8.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField8.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -867,22 +888,25 @@ Window {
         id: canIDField8
         x: 390
         y: 630
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "7DA"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField8
-        x: 484
+        x: 492
         y: 630
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"
@@ -913,11 +937,11 @@ Window {
         onClicked: {
                 // Logic to send CAN frame goes here
                 // console.log("Sending CAN frame with ID: " + canIDField.text + " and Data: " + canDataField.text)
-                var can_id = canIDField.text
+                var can_id = canIDField9.text
                 var can_data = canDataField9.text
                 if (can_id == "")
                 {
-                    can_id = canIDField.placeholderText
+                    can_id = canIDField9.placeholderText
                 }
                 if (can_data == "")
                 {
@@ -931,22 +955,25 @@ Window {
         id: canIDField9
         x: 390
         y: 676
-        width: 88
+        width: 96
         height: 40
         font.pixelSize: 15
-        placeholderText: "18DA10F1"
+        placeholderText: "7DA"
         background: Rectangle {
             radius: 5
             border.color: "#808080"
             border.width: 1
         }
+        onTextChanged: {
+            text = text.toUpperCase()
+        }
     }
 
     TextField {
         id: canDataField9
-        x: 484
+        x: 492
         y: 676
-        width: 176
+        width: 168
         height: 40
         font.pixelSize: 15
         placeholderText: "02 10 01"

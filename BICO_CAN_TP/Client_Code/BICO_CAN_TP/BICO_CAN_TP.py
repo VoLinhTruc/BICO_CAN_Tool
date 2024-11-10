@@ -49,9 +49,12 @@ class BICO_CAN_TP(Bico_QUIThread):
             self.current_ports = new_ports
             self.toUI.emit("com_port_list", self.current_ports)
             
-    def generateCanLog(self, can_id, can_msg):
+    def generateCanLog(self, can_id, is_29bits, can_msg):
         dlc = len(can_msg)
         hex_string = ""
+        can_id_as_hex_str = hex(can_id)[2:].upper()
+        if (is_29bits == True):
+            can_id_as_hex_str = can_id_as_hex_str + "x"
         for i in range(0, dlc):
             if (i != 0) and ((i % 8) == 0):
                 hex_string = hex_string + '\n'
@@ -60,7 +63,7 @@ class BICO_CAN_TP(Bico_QUIThread):
                 hex_string = hex_string + f"{can_msg[i]:02X}"
             else:
                 hex_string = hex_string + '   ' + f"{can_msg[i]:02X}"
-        can_log = f'{str(datetime.now()).ljust(29, " ")}{hex(can_id).upper()[2:].ljust(11, " ")}{str(dlc).ljust(7, " ")}{hex_string.upper()}'
+        can_log = f'{str(datetime.now()).ljust(29, " ")}{can_id_as_hex_str.ljust(11, " ")}{str(dlc).ljust(7, " ")}{hex_string.upper()}'
         return can_log
     
     
@@ -88,11 +91,6 @@ class BICO_CAN_TP(Bico_QUIThread):
             # All my_hardware_something and get_something() function are fictive of course.
             msg = self.bus.recv(0.01) # Blocking read are encouraged for better timing.
             if msg is not None:
-                if msg.arbitration_id <= 0x7FF:
-                    msg.arbitration_id &= 0x7FF
-                    msg.is_extended_id = False
-                else:
-                    msg.is_extended_id = True
                 print(f'{msg}')
                 ret = isotp.CanMessage(arbitration_id=msg.arbitration_id, data=msg.data, dlc=msg.dlc, extended_id=msg.is_extended_id)
         except:
@@ -159,16 +157,33 @@ class BICO_CAN_TP(Bico_QUIThread):
                         print(f'can_baudrate: {json_data["can_baudrate"]}')
                         print(f'rxid: {json_data["rxid"]}')
                         print(f'txid: {json_data["txid"]}')
-                        rxid = int(json_data["rxid"], 16)
-                        txid = int(json_data["txid"], 16)
+                        rxid = 0
+                        txid = 0
                         address_mode = None
                         filters = []
-                        if (rxid <= 0x7FF) and (txid <= 0x7FF):
+                        is_rx_extended = False
+                        is_tx_extended = False
+                        
+                        if (json_data["rxid"][-1] == "x"):
+                            is_rx_extended = True
+                            rxid = int(json_data["rxid"][:-1], 16)
+                        else:
+                            is_rx_extended = False
+                            rxid = int(json_data["rxid"], 16)
+                            
+                        if (json_data["txid"][-1] == "x"):
+                            is_tx_extended = True
+                            txid = int(json_data["txid"][:-1], 16)
+                        else:
+                            is_tx_extended = False
+                            txid = int(json_data["txid"], 16)
+                            
+                        if (is_rx_extended == False) and (is_tx_extended == False):
                             address_mode = isotp.AddressingMode.Normal_11bits
                             filters = [
                                 {"can_id": rxid, "can_mask": 0x7FF, "extended": False},
                             ]
-                        if (rxid > 0x7FF) and (txid > 0x7FF):
+                        elif (is_rx_extended == True) and (is_tx_extended == True):
                             address_mode = isotp.AddressingMode.Normal_29bits
                             filters = [
                                 {"can_id": rxid, "can_mask": 0x1FFFFFFF, "extended": True},
@@ -222,7 +237,7 @@ class BICO_CAN_TP(Bico_QUIThread):
                     if (self.tp_layer != None) and (self.bus != None):
                         self.tp_layer.send(hex_list, send_timeout=40)
                         print("send done")
-                        can_log = self.generateCanLog(self.tp_layer.address.get_tx_arbitration_id(), hex_list)
+                        can_log = self.generateCanLog(self.tp_layer.address.get_tx_arbitration_id(), self.tp_layer.address.is_tx_29bits(), hex_list)
                         print("send generate can log done")
                         self.toUI.emit("can_log", can_log)
                         print("emit to UI done")
@@ -255,7 +270,7 @@ class BICO_CAN_TP(Bico_QUIThread):
                 if payload is not None:
                     print(payload)
                     # if (rx_msg.arbitration_id == 0x18DA10F1) or (rx_msg.arbitration_id == 0x18DAF110):
-                    can_log = self.generateCanLog(self.tp_layer.address.get_rx_arbitration_id(), payload)
+                    can_log = self.generateCanLog(self.tp_layer.address.get_rx_arbitration_id(), self.tp_layer.address.is_rx_29bits(), payload)
                     self.toUI.emit("can_log", can_log)
         except:
             print("Error, but I don't know what it is >_<")
